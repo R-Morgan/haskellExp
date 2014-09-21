@@ -39,15 +39,22 @@ tag = do
 
 value :: Parsec.Parsec String () String
 value = do
-        content <- many Parsec.anyChar
+        content <- many $ Parsec.noneOf "\n"
         return content
 
---sgmlLine :: Parser SgmlLine
---sgmlLine = do
---           t <- tag 
---           many Parsec.space
---           v <- value 
---           return $ SgmlLine t v 
+sgmlLine :: Parsec.Parsec String () (String, String)
+sgmlLine = do
+           t <- tag 
+           many Parsec.space
+           v <- value 
+           return (t, v) 
+
+sgmlHead :: Parsec.Parsec String () [(String, String)]
+sgmlHead = do 
+           content <- Parsec.endBy sgmlLine eol
+           return content
+
+eol = Parsec.char '\n'
 
 --testLine = "<TITLE> Kalevala"
 
