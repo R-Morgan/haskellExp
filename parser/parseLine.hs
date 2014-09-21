@@ -25,10 +25,10 @@ parse rule text = Parsec.parse rule "(source)" text
 ----eol      = char "\n"
 
 
---data SgmlLine = SgmlLine {
---    getTag    :: String
---  , getValue  :: String
--- } deriving (Show, Eq, Ord)
+data SgmlLine = SgmlLine {
+    getTag    :: String
+  , getValue  :: String
+} deriving (Show, Eq, Ord)
 
 tag :: Parsec.Parsec String () String
 tag = do
