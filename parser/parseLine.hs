@@ -42,25 +42,25 @@ value = do
         content <- many $ Parsec.noneOf "\n"
         return content
 
-sgmlLine :: Parsec.Parsec String () (String, String)
+sgmlLine :: Parsec.Parsec String () SgmlLine 
 sgmlLine = do
            t <- tag 
            many Parsec.space
            v <- value 
-           return (t, v) 
+           return $ SgmlLine t v 
 
-sgmlHead :: Parsec.Parsec String () [(String, String)]
+sgmlHead :: Parsec.Parsec String () [SgmlLine]
 sgmlHead = do 
            content <- Parsec.endBy sgmlLine eol
            return content
 
 eol = Parsec.char '\n'
 
---testLine = "<TITLE> Kalevala"
+testLine = "<TITLE> Kalevala\n<PUBLISHER>   Tyomies\n"
 
---main = case parse SgmlLine "(test)" testLine of
---            Left err  -> print err
-------            Right res -> print res
+main = case parse sgmlHead testLine of
+            Left err  -> print err
+            Right res -> print res
 
 --parseSGML :: Parser String () (String, String)
 --parseSGML input = parse sgmlFile "(unknown)" input
