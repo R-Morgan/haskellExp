@@ -62,6 +62,3 @@ main = case parse sgmlHead testLine of
             Left err  -> print err
             Right res -> print res
 
---parseSGML :: Parser String () (String, String)
---parseSGML input = parse sgmlFile "(unknown)" input
-
