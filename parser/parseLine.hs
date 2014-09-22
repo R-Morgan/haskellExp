@@ -14,6 +14,9 @@ import Control.Applicative
 -- Get the Identity monad from here:
 import Control.Monad.Identity (Identity)
 
+-- imported to allow foro unwrapping Either values
+import Data.Either.Unwrap 
+
 -- alias Parsec.parse for more concise usage in my examples:
 parse rule text = Parsec.parse rule "(source)" text
 
@@ -56,9 +59,13 @@ sgmlHead = do
 
 eol = Parsec.char '\n'
 
-testLine = "<TITLE> Kalevala\n<PUBLISHER>   Tyomies\n"
+--testLine = "<TITLE> Kalevala\n<PUBLISHER>   Tyomies\n"
 
-main = case parse sgmlHead testLine of
-            Left err  -> print err
-            Right res -> print res
+--main = case parse sgmlHead testLine of
+            --Left err  -> print err
+            --Right res -> print res
 
+main = do
+       inputStr <- readFile "example.txt"
+       writeFile "parsed.txt" (show $ map getTag . fromRight $ parse sgmlHead inputStr)
+       
